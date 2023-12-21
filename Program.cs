@@ -54,7 +54,7 @@ namespace Labb_3_SQL___ORM
                     case "8":
                         Meny = false; // Avslutar programmet när meny blir false
                         break;
-        
+
 
                     default:
                         Console.WriteLine("incorecct option. Try again.");
@@ -65,8 +65,6 @@ namespace Labb_3_SQL___ORM
 
         }
 
-
-
         static public void GetStaff(string category = "") // Hämta staff metod som tar emot category och har ett tom sträng som standardvärde
         {
             using (SchoolContext context = new SchoolContext()) // Skapar en instans av SchoolContext (databasen)
@@ -74,17 +72,17 @@ namespace Labb_3_SQL___ORM
                 var query = context.staff // Skapar query för staff i databasen
                     .Join( // Använder join för att slå ihop staff och Positions tabellen
                         context.Positions, // hämtar Positions tabllen från databasen
-                        staff => staff.FkpositionId, 
+                        staff => staff.FkpositionId,
                         position => position.PositionId,
                         (staff, position) => new { Staff = staff, Position = position } // kopplas samman i tabllen
 
                     )//Visar resultatet, om cateogry är tom visas alla anställda, annars visas postionen som anges
-                    .Where(joinResult => string.IsNullOrEmpty(category) || joinResult.Position.PositionName == category) 
+                    .Where(joinResult => string.IsNullOrEmpty(category) || joinResult.Position.PositionName == category)
                     .Select(joinResult => joinResult.Staff) // Select hämtar endast de anställda från queryn genom JoinResult.Staff
                     .OrderBy(staff => staff.StaffId) // Sorterar de antällda urifån StaffId
                     .ToList(); // retunerar en lista av anställda
 
-                foreach (var staffMember in query) 
+                foreach (var staffMember in query)
                 {
                     Console.WriteLine($"{staffMember.FirstName} {staffMember.LastName}"); //Skriver ut alla antälldas namn+efternamn
                 }
@@ -201,7 +199,7 @@ namespace Labb_3_SQL___ORM
                     .Join(context.Courses,  //Hämtar Kurser
                         g => g.CourseId, // Tidigare kombinerad infomtation från grades = "g" och kommer innehålla CourseId
                         course => course.CourseId, // course represtnerar data från CourseId
-                        (g, course) => new 
+                        (g, course) => new
                         {
                             //Här hämtas infotmation från flera tabeller för att skapa ett objekt
                             g.StudentName,
@@ -237,13 +235,13 @@ namespace Labb_3_SQL___ORM
                             .Select(grade => Convert.ToInt64(grade.Grade1)) //Konverterar till int
                             .ToList() //Sparar och lägger till objekt
                     })
-                    
+
                     .Select(course => new //Skapar nytt obejekt med resultat för kurserna
                     {
                         CourseName = course.CourseName,
                         AverageGrade = course.Grades.Any() ? course.Grades.Average() : 0, //Om det finns betyg för kursen körs Average() metoden och räknar ut genomsnittet av betyg
                         MaxGrade = course.Grades.Any() ? course.Grades.Max() : 0, //O det finns betyg visas högsta betyget för kursen
-                        MinGrade = course.Grades.Any() ? course.Grades.Min() : 0 
+                        MinGrade = course.Grades.Any() ? course.Grades.Min() : 0
                     })
                     .ToList(); //Lägger till och sparar objekt
 
@@ -254,8 +252,8 @@ namespace Labb_3_SQL___ORM
                 }
             }
 
-            
-            }
+
+        }
 
         static public void AddStudent() // Metod för att lägga till studenter
         {
@@ -304,4 +302,4 @@ namespace Labb_3_SQL___ORM
 
         }
     }
-    }
+}
