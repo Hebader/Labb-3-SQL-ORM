@@ -197,7 +197,7 @@ namespace Labb_3_SQL___ORM
                             GradeDate = grade.Date
                         })
                     .Join(context.Courses,  //Hämtar Kurser
-                        g => g.CourseId, // Tidigare kombinerad infomtation från grades = "g" och kommer innehålla CourseId
+                        g => g.CourseId, // Tidigare kombinerad data från grades = "g" och kommer innehålla CourseId
                         course => course.CourseId, // course represtnerar data från CourseId
                         (g, course) => new
                         {
